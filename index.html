@@ -542,13 +542,15 @@ document.querySelectorAll(".tab").forEach(tab=>{
   });
 });
 
-/* SMARTLINK DAN KLIK VIDEO */
+/* SMARTLINK DAN REDIRECT KE VIDEO */
 function playVideo(id){
   const video=videos.find(v=>v.id===id);
   if(!video)return;
 
-  // Membuka Smartlink dan URL Video di tab baru
+  // 1. Membuka Smartlink di tab baru terlebih dahulu
   window.open(SMARTLINK,"_blank");
+
+  // 2. Membuka link pemutar video asli di tab baru atau mengarahkannya
   window.open(video.url,"_blank");
 
   startPushAfterVideo();
