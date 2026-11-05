@@ -93,40 +93,24 @@ header{
   background:#130b20;
   border-radius:10px;
   overflow:hidden;
-  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-.player-frame img{
+.player-frame iframe{
   width:100%;
   height:100%;
-  object-fit:cover;
+  border:0;
   display:block;
 }
-.player-overlay{
-  position:absolute;
-  inset:0;
-  display:grid;
-  place-items:center;
-  background:rgba(0,0,0,0.4);
-  transition:0.2s;
-}
-.player-frame:hover .player-overlay{
-  background:rgba(0,0,0,0.25);
-}
-.player-play-btn{
-  width:65px;
-  height:65px;
-  border-radius:50%;
-  background:rgba(138,43,226,.95);
-  color:#fff;
-  display:grid;
-  place-items:center;
-  font-size:26px;
-  padding-left:4px;
-  box-shadow:0 0 20px rgba(138,43,226,0.5);
-  transition:0.2s;
-}
-.player-frame:hover .player-play-btn{
-  transform:scale(1.1);
+.player-placeholder {
+  position: absolute;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+  padding: 20px;
+  z-index: 2;
+  pointer-events: none;
 }
 .player-actions{
   display:flex;
@@ -454,34 +438,39 @@ footer strong{color:var(--gold2)}
 
 <main class="container">
 
-  <!-- PLAYER UTAMA BERUPA THUMBNAIL INTERAKTIF -->
+  <!-- PLAYER SELALU DI ATAS -->
   <section class="player-section" id="playerBox">
     <div class="player-heading">
       <h2 id="playerTitle">Pilih Video untuk Diputar</h2>
       <span id="playerNumber">VIDEOS PLAYER</span>
     </div>
 
-    <div class="player-frame" id="playerFrame" onclick="openVideo()">
-      <img id="playerImage" src="" alt="Video Preview">
-      <div class="player-overlay">
-        <div class="player-play-btn">▶</div>
-      </div>
+    <div class="player-frame" id="playerFrame">
+      <div class="player-placeholder" id="playerPlaceholder">Silakan pilih salah satu video di bawah untuk memutar</div>
+      <iframe
+        id="videoPlayer"
+        src=""
+        title="PLAY Video Player"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
     </div>
 
     <div class="player-actions">
       <button class="action-btn" onclick="shareVideo()">↗ Bagikan</button>
-      <button class="action-btn primary" onclick="openVideo()">▶ Putar Video</button>
-      <button class="action-btn" onclick="fullscreenPlayer()">⛶ Layar Penuh</button>
+      <button class="action-btn" onclick="openVideo()">▶ Buka Video</button>
+      <button class="action-btn primary" onclick="fullscreenPlayer()">⛶ Layar Penuh</button>
     </div>
 
     <p class="notice">
-      Klik pada pemutar atau tombol <b>"Putar Video"</b> untuk menikmati video secara penuh tanpa kendala layar hitam.
+      Pemutar video disediakan melalui layanan pihak ketiga. Ketersediaan dan pemutaran video mengikuti layanan penyedia.
     </p>
   </section>
 
   <section class="hero">
     <h2>Selamat Datang di VIDEOS</h2>
-    <p>Temukan koleksi video pilihan dengan tampilan premium. Pilih thumbnail untuk memutar video.</p>
+    <p>Temukan koleksi video pilihan dengan tampilan premium. Pilih thumbnail untuk membuka pemutar video.</p>
   </section>
 
   <div class="section-title">
@@ -496,4 +485,294 @@ footer strong{color:var(--gold2)}
   <div class="tabs">
     <button class="tab active" data-sort="newest">Terbaru</button>
     <button class="tab" data-sort="trending">Trending</button>
-    <button class="tab" data-sort="oldest">
+    <button class="tab" data-sort="oldest">Terlama</button>
+  </div>
+
+  <div class="video-grid" id="videoGrid"></div>
+  <div class="empty" id="emptyMessage">Video tidak ditemukan.</div>
+  <div class="pagination" id="pagination"></div>
+
+</main>
+
+<footer>
+  <strong>VIDEOS STREAM</strong><br>
+  Premium Video Gallery<br>
+  © 2026 VIDEOS STREAM. All Rights Reserved.
+</footer>
+
+<!-- WIDGET IN-PAGE PUSH -->
+<div class="inp-push-container" id="inpPushContainer">
+  <div class="inp-push-box" onclick="clickInPagePush()">
+    <button class="inp-push-close" onclick="closeInPagePush(event)" aria-label="Tutup">&times;</button>
+    <img src="https://i.ibb.co/LXv5hVDX/no-mark-React-Native-snapshot-image.png" alt="Notification" class="inp-push-thumb">
+    <div class="inp-push-content">
+      <span class="inp-push-badge">SPONSORED</span>
+      <h4 class="inp-push-title">Penawaran Eksklusif</h4>
+      <p class="inp-push-desc">Ketuk di sini untuk melihat info menarik dari kami.</p>
+      <button class="inp-push-btn">LIHAT SEKARANG</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SMARTLINK =
+"https://www.profitableratecpmnetwork.com/agijdjkf?key=b68403d796344c04660419b144a9cea4";
+
+const videos = [
+ {id:1,title:"Tante suka colmek",image:"https://i.ibb.co/CKJyf6sm/1792767294993.jpg",url:"https://trbnvideo.live/e/Jn5ku3Fg",date:16,trend:16},
+ {id:2,title:"Teriakan malam",image:"https://i.ibb.co.com/0y2KWXrF/1791726733864.jpg",url:"https://trbnvideo.live/e/PUJLG3dK",date:15,trend:15},
+ {id:3,title:"tante amel suka di atas",image:"https://i.ibb.co.com/4Z7Kzp2j/1792464743361.jpg",url:"https://trbnvideo.live/e/JUP4l947",date:14,trend:14},
+ {id:4,title:"ketika rumah lagi sepi",image:"https://i.ibb.co/39YxXmyN/1792931639621.jpg",url:"https://trbnvideo.live/e/wf2WWobz",date:13,trend:13},
+ {id:5,title:"jadi pelampiasa kakak sendiri",image:"https://i.ibb.co.com/ZpGTXSrz/1793033955720.jpg",url:"https://trbnvideo.live/e/WogIBwDB",date:12,trend:12},
+ {id:6,title:"Cerita Malam dengan Sensasi Berbeda",image:"https://i.ibb.co/39YxXmyN/1792931639621.jpg",url:"https://trbnvideo.live/e/YgbmFJBl",date:11,trend:11},
+ {id:7,title:"Aksi Berani yang Bikin Penasaran",image:"https://i.ibb.co/fYTmrDct/1792755711707.jpg",url:"https://trbnvideo.live/e/h4WF6bHt",date:10,trend:10},
+ {id:8,title:"Jangan Lewatkan Momen Panas Ini",image:"https://i.ibb.co.com/bjWrkCh5/1791702322935.jpg",url:"https://trbnvideo.live/e/Tdw0thWA",date:9,trend:9},
+];
+
+const perPage=4;
+let currentPage=1;
+let currentSort="newest";
+let currentVideo=null;
+let filteredVideos=[];
+
+const videoGrid=document.getElementById("videoGrid");
+const pagination=document.getElementById("pagination");
+const searchInput=document.getElementById("searchInput");
+const emptyMessage=document.getElementById("emptyMessage");
+
+function getVideos(){
+  let result=[...videos];
+  const keyword=searchInput.value.trim().toLowerCase();
+
+  if(keyword){
+    result=result.filter(video=>
+      video.title.toLowerCase().includes(keyword)
+    );
+  }
+
+  if(currentSort==="newest"){
+    result.sort((a,b)=>b.date-a.date);
+  }else if(currentSort==="oldest"){
+    result.sort((a,b)=>a.date-b.date);
+  }else if(currentSort==="trending"){
+    result.sort((a,b)=>b.trend-a.trend);
+  }
+
+  return result;
+}
+
+function renderVideos(){
+  filteredVideos=getVideos();
+
+  const totalPages=Math.ceil(filteredVideos.length/perPage);
+  if(currentPage>totalPages)currentPage=Math.max(1,totalPages);
+
+  const start=(currentPage-1)*perPage;
+  const pageVideos=filteredVideos.slice(start,start+perPage);
+
+  videoGrid.innerHTML="";
+  emptyMessage.style.display=pageVideos.length?"none":"block";
+
+  pageVideos.forEach(video=>{
+    const card=document.createElement("article");
+    card.className="video-card";
+    card.innerHTML=`
+      <div class="thumb">
+        <img src="${video.image}" alt="${video.title}" loading="lazy">
+        <div class="play-icon"><span>▶</span></div>
+      </div>
+      <div class="video-info">
+        <h3>${video.title}</h3>
+        <div class="video-meta">
+          <span>VIDEO ${String(video.id).padStart(2,"0")}</span>
+          <b>▶ TONTON</b>
+        </div>
+      </div>
+    `;
+    card.addEventListener("click",()=>playVideo(video.id));
+    videoGrid.appendChild(card);
+  });
+
+  document.getElementById("totalVideos").textContent=
+    filteredVideos.length+" VIDEO";
+
+  renderPagination(totalPages);
+}
+
+function renderPagination(totalPages){
+  pagination.innerHTML="";
+  if(totalPages<=1)return;
+
+  const prev=document.createElement("button");
+  prev.className="page-btn";
+  prev.textContent="‹";
+  prev.disabled=currentPage===1;
+  prev.onclick=()=>{
+    currentPage--;
+    renderVideos();
+  };
+  pagination.appendChild(prev);
+
+  for(let i=1;i<=totalPages;i++){
+    const button=document.createElement("button");
+    button.className="page-btn"+(i===currentPage?" active":"");
+    button.textContent=i;
+    button.onclick=()=>{
+      currentPage=i;
+      renderVideos();
+    };
+    pagination.appendChild(button);
+  }
+
+  const next=document.createElement("button");
+  next.className="page-btn";
+  next.textContent="›";
+  next.disabled=currentPage===totalPages;
+  next.onclick=()=>{
+    currentPage++;
+    renderVideos();
+  };
+  pagination.appendChild(next);
+}
+
+searchInput.addEventListener("input",()=>{
+  currentPage=1;
+  renderVideos();
+});
+
+document.querySelectorAll(".tab").forEach(tab=>{
+  tab.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(item=>item.classList.remove("active"));
+    tab.classList.add("active");
+    currentSort=tab.dataset.sort;
+    currentPage=1;
+    renderVideos();
+  });
+});
+
+/* SMARTLINK DAN VIDEO */
+function playVideo(id){
+  const video=videos.find(v=>v.id===id);
+  if(!video)return;
+
+  currentVideo=video;
+
+  // Buka Smartlink dari klik pengunjung.
+  window.open(SMARTLINK,"_blank");
+
+  const iframe = document.getElementById("videoPlayer");
+  const placeholder = document.getElementById("playerPlaceholder");
+  
+  placeholder.style.display = "none";
+  iframe.src = video.url;
+
+  document.getElementById("playerTitle").textContent=video.title;
+  document.getElementById("playerNumber").textContent=
+    "VIDEO "+String(video.id).padStart(2,"0");
+
+  document.getElementById("playerBox").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+
+  startPushAfterVideo();
+}
+
+function openVideo(){
+  if(!currentVideo){
+    alert("Pilih video terlebih dahulu.");
+    return;
+  }
+  window.open(currentVideo.url,"_blank");
+}
+
+function shareVideo(){
+  if(!currentVideo){
+    alert("Pilih video terlebih dahulu.");
+    return;
+  }
+
+  const shareUrl=currentVideo.url;
+
+  if(navigator.share){
+    navigator.share({
+      title:currentVideo.title,
+      url:shareUrl
+    }).catch(()=>{});
+  }else if(navigator.clipboard){
+    navigator.clipboard.writeText(shareUrl)
+      .then(()=>alert("Link video berhasil disalin."));
+  }else{
+    prompt("Salin link video ini:",shareUrl);
+  }
+}
+
+function fullscreenPlayer(){
+  const frame=document.getElementById("playerFrame");
+
+  if(frame.requestFullscreen){
+    frame.requestFullscreen();
+  }else if(frame.webkitRequestFullscreen){
+    frame.webkitRequestFullscreen();
+  }
+}
+
+/* LOGIKA IN-PAGE PUSH */
+const inpPushContainer=document.getElementById("inpPushContainer");
+
+const MAX_POPUPS=3;
+const POPUP_DELAY=20000; 
+
+let pushTimer=null;
+let videoSelected=false;
+let popupCount=0;
+
+function showInPagePush(){
+  if(!videoSelected)return;
+  if(popupCount>=MAX_POPUPS)return;
+
+  popupCount++;
+  inpPushContainer.classList.add("show");
+}
+
+function schedulePush(){
+  clearTimeout(pushTimer);
+
+  if(!videoSelected)return;
+  if(popupCount>=MAX_POPUPS)return;
+
+  pushTimer=setTimeout(showInPagePush, POPUP_DELAY);
+}
+
+function startPushAfterVideo(){
+  clearTimeout(pushTimer);
+
+  popupCount=0;
+  videoSelected=true;
+
+  inpPushContainer.classList.remove("show");
+
+  schedulePush();
+}
+
+function closeInPagePush(event){
+  event.stopPropagation();
+  window.open(SMARTLINK, "_blank");
+  inpPushContainer.classList.remove("show");
+  schedulePush();
+}
+
+function clickInPagePush(){
+  window.open(SMARTLINK, "_blank");
+  inpPushContainer.classList.remove("show");
+  schedulePush();
+}
+
+renderVideos();
+</script>
+
+<!-- POPUNDER ADSTERRA -->
+<script src="https://pl30627583.profitableratecpmnetwork.com/d5/60/79/d56079c7788bd3e1f5be8a617ee76745.js"></script>
+
+</body>
+</html>
