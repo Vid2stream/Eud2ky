@@ -103,16 +103,6 @@ header{
   border:0;
   display:block;
 }
-.player-placeholder {
-  position: absolute;
-  color: var(--muted);
-  font-size: 13px;
-  text-align: center;
-  padding: 20px;
-  z-index: 2;
-  pointer-events: none;
-  display: none; /* Disembunyikan karena video pertama langsung dimuat */
-}
 .player-actions{
   display:flex;
   flex-wrap:wrap;
@@ -295,32 +285,4 @@ footer strong{color:var(--gold2)}
   backdrop-filter: blur(4px);
   display: none;
   align-items: center;
-  justify-content: center;
-  padding: 20px;
-  animation: fadeIn 0.3s ease-out forwards;
-}
-
-.inp-push-container.show {
-  display: flex;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.inp-push-box {
-  background: linear-gradient(145deg, #181028, #050508);
-  border: 1px solid var(--gold);
-  border-radius: 16px;
-  padding: 20px;
-  width: 100%;
-  max-width: 380px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  position: relative;
-  cursor: pointer;
-  animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.2
+  justify-content:
