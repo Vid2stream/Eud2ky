@@ -1,778 +1,235 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050508">
-<title>VIDEOS STREAM Premium</title>
-<meta name="description" content="VIDEOS STREAM - Koleksi video pilihan dengan tampilan premium.">
-
-<style>
-:root{
-  --bg:#050508;
-  --panel:#100d1a;
-  --gold:#8a2be2;
-  --gold2:#b174ff;
-  --text:#f5f5f5;
-  --muted:#a7b0c0;
-  --border:rgba(138,43,226,.25);
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-}
-button,input{font:inherit}
-header{
-  background:linear-gradient(135deg,#120924,#050508);
-  border-bottom:1px solid var(--border);
-  padding:18px 14px;
-}
-.header-inner{
-  max-width:1150px;
-  margin:auto;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{
-  width:43px;height:43px;
-  border-radius:12px;
-  background:linear-gradient(135deg,var(--gold2),#4b0082);
-  color:#fff;
-  display:grid;
-  place-items:center;
-  font-size:22px;
-  font-weight:900;
-}
-.brand h1{margin:0;font-size:21px;letter-spacing:1px}
-.brand small{color:var(--gold2);font-size:10px;letter-spacing:2px}
-.header-label{
-  color:var(--gold2);
-  border:1px solid var(--border);
-  padding:7px 11px;
-  border-radius:20px;
-  font-size:11px;
-}
-.container{
-  max-width:1150px;
-  margin:auto;
-  padding:18px 14px 35px;
-}
-
-/* PLAYER DI ATAS */
-.player-section{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:13px;
-  margin-bottom:20px;
-  scroll-margin-top:10px;
-}
-.player-heading{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  align-items:center;
-  margin-bottom:12px;
-}
-.player-heading h2{
-  margin:0;
-  font-size:16px;
-  color:var(--gold2);
-}
-.player-heading span{font-size:10px;color:var(--muted)}
-.player-frame{
-  position:relative;
-  width:100%;
-  aspect-ratio:16/9;
-  background:#130b20;
-  border-radius:10px;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.player-frame iframe{
-  width:100%;
-  height:100%;
-  border:0;
-  display:block;
-}
-.player-placeholder {
-  position: absolute;
-  color: var(--muted);
-  font-size: 13px;
-  text-align: center;
-  padding: 20px;
-  z-index: 2;
-  pointer-events: none;
-}
-.player-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:12px;
-}
-.action-btn{
-  flex:1;
-  min-width:100px;
-  border:1px solid var(--border);
-  background:#171026;
-  color:var(--gold2);
-  padding:11px 9px;
-  border-radius:8px;
-  cursor:pointer;
-  font-size:12px;
-}
-.action-btn.primary{
-  background:var(--gold);
-  color:#fff;
-  font-weight:bold;
-}
-.notice{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.6;
-  margin-top:12px;
-}
-
-/* HERO */
-.hero{
-  background:linear-gradient(120deg,#180d2e,#0a0712 65%,#20102b);
-  border:1px solid var(--border);
-  border-radius:17px;
-  padding:22px 18px;
-  margin-bottom:20px;
-}
-.hero h2{margin:0 0 8px;font-size:23px;color:var(--gold2)}
-.hero p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
-.section-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin:22px 0 13px;
-}
-.section-title h2{font-size:17px;margin:0}
-.section-title span{color:var(--gold2);font-size:11px}
-.search-wrap{margin-bottom:13px}
-.search-wrap input{
-  width:100%;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:13px 14px;
-  color:white;
-  outline:none;
-}
-.search-wrap input:focus{border-color:var(--gold)}
-.tabs{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding-bottom:5px;
-  margin-bottom:16px;
-}
-.tab{
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:var(--muted);
-  padding:9px 14px;
-  border-radius:20px;
-  white-space:nowrap;
-  cursor:pointer;
-  font-size:12px;
-}
-.tab.active{background:var(--gold);color:#fff;font-weight:bold}
-
-/* VIDEO GRID */
-.video-grid{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:14px;
-}
-.video-card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:12px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:.2s;
-}
-.video-card:hover{transform:translateY(-3px);border-color:var(--gold)}
-.thumb{
-  position:relative;
-  aspect-ratio:16/10;
-  overflow:hidden;
-  background:#130b20;
-}
-.thumb img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  transition:.3s;
-}
-.video-card:hover .thumb img{transform:scale(1.04)}
-.play-icon{
-  position:absolute;
-  inset:0;
-  display:grid;
-  place-items:center;
-  background:rgba(0,0,0,.15);
-}
-.play-icon span{
-  width:43px;height:43px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  padding-left:3px;
-  background:rgba(138,43,226,.92);
-  color:#fff;
-  font-size:19px;
-}
-.video-info{padding:10px}
-.video-info h3{
-  font-size:12px;
-  line-height:1.45;
-  margin:0 0 7px;
-  min-height:35px;
-}
-.video-meta{
-  display:flex;
-  justify-content:space-between;
-  color:var(--muted);
-  font-size:10px;
-}
-.video-meta b{color:var(--gold2)}
-.empty{
-  display:none;
-  text-align:center;
-  color:var(--muted);
-  padding:35px 10px;
-}
-.pagination{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:7px;
-  margin:22px 0;
-  flex-wrap:wrap;
-}
-.page-btn{
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:white;
-  padding:9px 13px;
-  border-radius:8px;
-  cursor:pointer;
-}
-.page-btn.active{background:var(--gold);color:#fff;font-weight:bold}
-.page-btn:disabled{opacity:.35;cursor:not-allowed}
-footer{
-  text-align:center;
-  border-top:1px solid var(--border);
-  color:var(--muted);
-  padding:22px 12px;
-  font-size:11px;
-  line-height:1.8;
-  margin-top:30px;
-}
-footer strong{color:var(--gold2)}
-
-/* WIDGET IN-PAGE PUSH */
-.inp-push-container {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  background: rgba(5, 5, 8, 0.85);
-  backdrop-filter: blur(4px);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  animation: fadeIn 0.3s ease-out forwards;
-}
-
-.inp-push-container.show {
-  display: flex;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.inp-push-box {
-  background: linear-gradient(145deg, #181028, #050508);
-  border: 1px solid var(--gold);
-  border-radius: 16px;
-  padding: 20px;
-  width: 100%;
-  max-width: 380px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  position: relative;
-  cursor: pointer;
-  animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-@keyframes scaleUp {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.inp-push-close {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  border: 0;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--muted);
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  font-size: 16px;
-  cursor: pointer;
-  z-index: 10;
-  display: grid;
-  place-items: center;
-}
-.inp-push-close:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-}
-
-.inp-push-thumb {
-  width: 100%;
-  height: 160px;
-  border-radius: 10px;
-  object-fit: cover;
-  margin-bottom: 14px;
-  border: 1px solid var(--border);
-}
-
-.inp-push-content {
-  width: 100%;
-}
-
-.inp-push-badge {
-  display: inline-block;
-  background: var(--gold);
-  color: #fff;
-  font-size: 10px;
-  font-weight: bold;
-  padding: 3px 8px;
-  border-radius: 4px;
-  margin-bottom: 8px;
-  letter-spacing: 0.5px;
-}
-
-.inp-push-title {
-  color: var(--gold2);
-  font-size: 15px;
-  font-weight: bold;
-  margin: 0 0 6px;
-  line-height: 1.35;
-}
-
-.inp-push-desc {
-  color: #c2c9d4;
-  font-size: 12px;
-  margin: 0 0 16px;
-  line-height: 1.5;
-}
-
-.inp-push-btn {
-  background: var(--gold);
-  color: #fff;
-  border: none;
-  width: 100%;
-  padding: 10px;
-  font-weight: bold;
-  font-size: 13px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-@media(max-width:850px){
-  .video-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-}
-@media(max-width:600px){
-  .video-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .brand h1{font-size:17px}
-  .header-label{font-size:9px}
-  .hero h2{font-size:20px}
-  .container{padding-left:11px;padding-right:11px}
-}
-@media(max-width:350px){
-  .video-grid{gap:7px}
-  .video-info{padding:8px}
-  .video-info h3{font-size:11px}
-}
-</style>
+    <script>(function(s){s.dataset.zone='11740128',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <meta name="monetag" content="da0d80a5c ebbd2aa5575234d8507b148">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stream asia</title>
+    <!-- Google Fonts & FontAwesome untuk ikon -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: #0b0f19;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+        .video-preview {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            background: #1f2937;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .video-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(4px) brightness(0.6);
+            transform: scale(1.05);
+        }
+        .play-btn-overlay {
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            background: rgba(225, 29, 72, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 0 30px rgba(225, 29, 72, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: pulse-ring 2s infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(225, 29, 72, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+        }
+        .video-preview:hover .play-btn-overlay {
+            transform: scale(1.1);
+            background: rgb(244, 63, 94);
+        }
+        .video-duration {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 4px;
+            color: #fff;
+        }
+        .content-body {
+            padding: 20px;
+        }
+        .meta-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .tag {
+            background: rgba(225, 29, 72, 0.15);
+            color: #fb7185;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        h1 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #ffffff;
+            line-height: 1.4;
+        }
+        .video-stats {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 12px;
+        }
+        .btn-watch {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(225, 29, 72, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            margin-bottom: 10px;
+        }
+        .btn-watch:hover {
+            background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(225, 29, 72, 0.5);
+        }
+        .btn-blog {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+        .btn-blog:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 15px;
+        }
+        .footer-note i {
+            color: #34d399;
+        }
+    </style>
 </head>
-
 <body>
 
-<header>
-  <div class="header-inner">
-    <div class="brand">
-      <div class="logo">M</div>
-      <div>
-        <h1>VIDEOS STREAM</h1>
-        <small>PREMIUM VIDEO GALLERY</small>
-      </div>
-    </div>
-    <div class="header-label">✦ PREMIUM ACCESS</div>
-  </div>
-</header>
+    <div class="container">
+        <!-- Thumbnail Video (Membuka Smartlink di Tab Baru, Video terbuka otomatis di tab ini lewat script) -->
+        <a href="https://uplcm.com/4/11744117" class="video-preview" target="_blank" onclick="playVideoDirectly(event)">
+            <img src="https://i.ibb.co.com/ZRNzfsBZ/1794065554289.jpg" alt="Video Thumbnail">
+            <div class="play-btn-overlay">
+                <i class="fa-solid fa-play"></i>
+            </div>
+            <div class="video-duration">
+                <i class="fa-solid fa-circle" style="font-size: 8px; color: #ef4444;"></i> 
+            </div>
+        </a>
 
-<main class="container">
+        <!-- Bagian Informasi Video -->
+        <div class="content-body">
+            <div class="meta-tags">
+                <span class="tag"><i class="fa-solid fa-fire"></i> Hot Trend</span>
+                <span class="tag"><i class="fa-solid fa-shield"></i> HD Quality</span>
+            </div>
 
-  <!-- PLAYER SELALU DI ATAS -->
-  <section class="player-section" id="playerBox">
-    <div class="player-heading">
-      <h2 id="playerTitle">Pilih Video untuk Diputar</h2>
-      <span id="playerNumber">VIDEOS PLAYER</span>
-    </div>
+            <h1>Tontonan gratis</h1>
+            
+            <div class="video-stats">
+                <span><i class="fa-solid fa-eye"></i> 957k Penonton</span>
+                <span><i class="fa-solid fa-thumbs-up"></i> 98% Suka</span>
+            </div>
 
-    <div class="player-frame" id="playerFrame">
-      <div class="player-placeholder" id="playerPlaceholder">Silakan pilih salah satu video di bawah untuk memutar</div>
-      <iframe
-        id="videoPlayer"
-        src=""
-        title="PLAY Video Player"
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowfullscreen
-        loading="lazy">
-      </iframe>
-    </div>
+            <!-- Tombol Utama (Membuka Smartlink di Tab Baru, Video terbuka otomatis di tab ini lewat script) -->
+            <a href="https://uplcm.com/4/11744117" class="btn-watch" target="_blank" onclick="playVideoDirectly(event)">
+                <i class="fa-solid fa-play"></i> TONTON VIDEO SEKARANG
+            </a>
 
-    <div class="player-actions">
-      <button class="action-btn" onclick="shareVideo()">↗ Bagikan</button>
-      <button class="action-btn" onclick="openVideo()">▶ Buka Video</button>
-      <button class="action-btn primary" onclick="fullscreenPlayer()">⛶ Layar Penuh</button>
-    </div>
+            <!-- Tombol Menuju Website / Blog Anda -->
+            <a href="https://uplcm.com/4/11744117" class="btn-blog" target="_blank">
+                <i class="fa-solid fa-globe"></i> Kunjungi Website
+            </a>
 
-    <p class="notice">
-      Pemutar video disediakan melalui layanan pihak ketiga. Ketersediaan dan pemutaran video mengikuti layanan penyedia.
-    </p>
-  </section>
-
-  <section class="hero">
-    <h2>Selamat Datang di VIDEOS</h2>
-    <p>Temukan koleksi video pilihan dengan tampilan premium. Pilih thumbnail untuk membuka pemutar video.</p>
-  </section>
-
-  <div class="section-title">
-    <h2>✦ Koleksi Video</h2>
-    <span id="totalVideos">16 VIDEO</span>
-  </div>
-
-  <div class="search-wrap">
-    <input type="search" id="searchInput" placeholder="Cari judul video...">
-  </div>
-
-  <div class="tabs">
-    <button class="tab active" data-sort="newest">Terbaru</button>
-    <button class="tab" data-sort="trending">Trending</button>
-    <button class="tab" data-sort="oldest">Terlama</button>
-  </div>
-
-  <div class="video-grid" id="videoGrid"></div>
-  <div class="empty" id="emptyMessage">Video tidak ditemukan.</div>
-  <div class="pagination" id="pagination"></div>
-
-</main>
-
-<footer>
-  <strong>VIDEOS STREAM</strong><br>
-  Premium Video Gallery<br>
-  © 2026 VIDEOS STREAM. All Rights Reserved.
-</footer>
-
-<!-- WIDGET IN-PAGE PUSH -->
-<div class="inp-push-container" id="inpPushContainer">
-  <div class="inp-push-box" onclick="clickInPagePush()">
-    <button class="inp-push-close" onclick="closeInPagePush(event)" aria-label="Tutup">&times;</button>
-    <img src="https://i.ibb.co/LXv5hVDX/no-mark-React-Native-snapshot-image.png" alt="Notification" class="inp-push-thumb">
-    <div class="inp-push-content">
-      <span class="inp-push-badge">SPONSORED</span>
-      <h4 class="inp-push-title">Penawaran Eksklusif</h4>
-      <p class="inp-push-desc">Ketuk di sini untuk melihat info menarik dari kami.</p>
-      <button class="inp-push-btn">LIHAT SEKARANG</button>
-    </div>
-  </div>
-</div>
-
-<script>
-const SMARTLINK =
-"https://www.profitableratecpmnetwork.com/agijdjkf?key=b68403d796344c04660419b144a9cea4";
-
-const videos = [
- {id:1,title:"Tante suka colmek",image:"https://i.ibb.co/CKJyf6sm/1792767294993.jpg",url:"https://trbnvideo.live/e/Jn5ku3Fg",date:16,trend:16},
- {id:2,title:"Teriakan malam",image:"https://i.ibb.co.com/0y2KWXrF/1791726733864.jpg",url:"https://trbnvideo.live/e/PUJLG3dK",date:15,trend:15},
- {id:3,title:"tante amel suka di atas",image:"https://i.ibb.co.com/4Z7Kzp2j/1792464743361.jpg",url:"https://trbnvideo.live/e/JUP4l947",date:14,trend:14},
- {id:4,title:"ketika rumah lagi sepi",image:"https://i.ibb.co/39YxXmyN/1792931639621.jpg",url:"https://trbnvideo.live/e/wf2WWobz",date:13,trend:13},
- {id:5,title:"jadi pelampiasa kakak sendiri",image:"https://i.ibb.co.com/ZpGTXSrz/1793033955720.jpg",url:"https://trbnvideo.live/e/WogIBwDB",date:12,trend:12},
- {id:6,title:"Cerita Malam dengan Sensasi Berbeda",image:"https://i.ibb.co/39YxXmyN/1792931639621.jpg",url:"https://trbnvideo.live/e/YgbmFJBl",date:11,trend:11},
- {id:7,title:"Aksi Berani yang Bikin Penasaran",image:"https://i.ibb.co/fYTmrDct/1792755711707.jpg",url:"https://trbnvideo.live/e/h4WF6bHt",date:10,trend:10},
- {id:8,title:"Jangan Lewatkan Momen Panas Ini",image:"https://i.ibb.co.com/bjWrkCh5/1791702322935.jpg",url:"https://trbnvideo.live/e/Tdw0thWA",date:9,trend:9},
-];
-
-const perPage=4;
-let currentPage=1;
-let currentSort="newest";
-let currentVideo=null;
-let filteredVideos=[];
-
-const videoGrid=document.getElementById("videoGrid");
-const pagination=document.getElementById("pagination");
-const searchInput=document.getElementById("searchInput");
-const emptyMessage=document.getElementById("emptyMessage");
-
-function getVideos(){
-  let result=[...videos];
-  const keyword=searchInput.value.trim().toLowerCase();
-
-  if(keyword){
-    result=result.filter(video=>
-      video.title.toLowerCase().includes(keyword)
-    );
-  }
-
-  if(currentSort==="newest"){
-    result.sort((a,b)=>b.date-a.date);
-  }else if(currentSort==="oldest"){
-    result.sort((a,b)=>a.date-b.date);
-  }else if(currentSort==="trending"){
-    result.sort((a,b)=>b.trend-a.trend);
-  }
-
-  return result;
-}
-
-function renderVideos(){
-  filteredVideos=getVideos();
-
-  const totalPages=Math.ceil(filteredVideos.length/perPage);
-  if(currentPage>totalPages)currentPage=Math.max(1,totalPages);
-
-  const start=(currentPage-1)*perPage;
-  const pageVideos=filteredVideos.slice(start,start+perPage);
-
-  videoGrid.innerHTML="";
-  emptyMessage.style.display=pageVideos.length?"none":"block";
-
-  pageVideos.forEach(video=>{
-    const card=document.createElement("article");
-    card.className="video-card";
-    card.innerHTML=`
-      <div class="thumb">
-        <img src="${video.image}" alt="${video.title}" loading="lazy">
-        <div class="play-icon"><span>▶</span></div>
-      </div>
-      <div class="video-info">
-        <h3>${video.title}</h3>
-        <div class="video-meta">
-          <span>VIDEO ${String(video.id).padStart(2,"0")}</span>
-          <b>▶ TONTON</b>
+            <div class="footer-note">
+                <i class="fa-solid fa-lock"></i> Koneksi aman & terenkripsi.
+            </div>
         </div>
-      </div>
-    `;
-    card.addEventListener("click",()=>playVideo(video.id));
-    videoGrid.appendChild(card);
-  });
+    </div>
 
-  document.getElementById("totalVideos").textContent=
-    filteredVideos.length+" VIDEO";
-
-  renderPagination(totalPages);
-}
-
-function renderPagination(totalPages){
-  pagination.innerHTML="";
-  if(totalPages<=1)return;
-
-  const prev=document.createElement("button");
-  prev.className="page-btn";
-  prev.textContent="‹";
-  prev.disabled=currentPage===1;
-  prev.onclick=()=>{
-    currentPage--;
-    renderVideos();
-  };
-  pagination.appendChild(prev);
-
-  for(let i=1;i<=totalPages;i++){
-    const button=document.createElement("button");
-    button.className="page-btn"+(i===currentPage?" active":"");
-    button.textContent=i;
-    button.onclick=()=>{
-      currentPage=i;
-      renderVideos();
-    };
-    pagination.appendChild(button);
-  }
-
-  const next=document.createElement("button");
-  next.className="page-btn";
-  next.textContent="›";
-  next.disabled=currentPage===totalPages;
-  next.onclick=()=>{
-    currentPage++;
-    renderVideos();
-  };
-  pagination.appendChild(next);
-}
-
-searchInput.addEventListener("input",()=>{
-  currentPage=1;
-  renderVideos();
-});
-
-document.querySelectorAll(".tab").forEach(tab=>{
-  tab.addEventListener("click",()=>{
-    document.querySelectorAll(".tab").forEach(item=>item.classList.remove("active"));
-    tab.classList.add("active");
-    currentSort=tab.dataset.sort;
-    currentPage=1;
-    renderVideos();
-  });
-});
-
-/* SMARTLINK DAN VIDEO */
-function playVideo(id){
-  const video=videos.find(v=>v.id===id);
-  if(!video)return;
-
-  currentVideo=video;
-
-  // Buka Smartlink dari klik pengunjung.
-  window.open(SMARTLINK,"_blank");
-
-  const iframe = document.getElementById("videoPlayer");
-  const placeholder = document.getElementById("playerPlaceholder");
-  
-  placeholder.style.display = "none";
-  iframe.src = video.url;
-
-  document.getElementById("playerTitle").textContent=video.title;
-  document.getElementById("playerNumber").textContent=
-    "VIDEO "+String(video.id).padStart(2,"0");
-
-  document.getElementById("playerBox").scrollIntoView({
-    behavior:"smooth",
-    block:"start"
-  });
-
-  startPushAfterVideo();
-}
-
-function openVideo(){
-  if(!currentVideo){
-    alert("Pilih video terlebih dahulu.");
-    return;
-  }
-  window.open(currentVideo.url,"_blank");
-}
-
-function shareVideo(){
-  if(!currentVideo){
-    alert("Pilih video terlebih dahulu.");
-    return;
-  }
-
-  const shareUrl=currentVideo.url;
-
-  if(navigator.share){
-    navigator.share({
-      title:currentVideo.title,
-      url:shareUrl
-    }).catch(()=>{});
-  }else if(navigator.clipboard){
-    navigator.clipboard.writeText(shareUrl)
-      .then(()=>alert("Link video berhasil disalin."));
-  }else{
-    prompt("Salin link video ini:",shareUrl);
-  }
-}
-
-function fullscreenPlayer(){
-  const frame=document.getElementById("playerFrame");
-
-  if(frame.requestFullscreen){
-    frame.requestFullscreen();
-  }else if(frame.webkitRequestFullscreen){
-    frame.webkitRequestFullscreen();
-  }
-}
-
-/* LOGIKA IN-PAGE PUSH */
-const inpPushContainer=document.getElementById("inpPushContainer");
-
-const MAX_POPUPS=3;
-const POPUP_DELAY=20000; 
-
-let pushTimer=null;
-let videoSelected=false;
-let popupCount=0;
-
-function showInPagePush(){
-  if(!videoSelected)return;
-  if(popupCount>=MAX_POPUPS)return;
-
-  popupCount++;
-  inpPushContainer.classList.add("show");
-}
-
-function schedulePush(){
-  clearTimeout(pushTimer);
-
-  if(!videoSelected)return;
-  if(popupCount>=MAX_POPUPS)return;
-
-  pushTimer=setTimeout(showInPagePush, POPUP_DELAY);
-}
-
-function startPushAfterVideo(){
-  clearTimeout(pushTimer);
-
-  popupCount=0;
-  videoSelected=true;
-
-  inpPushContainer.classList.remove("show");
-
-  schedulePush();
-}
-
-function closeInPagePush(event){
-  event.stopPropagation();
-  window.open(SMARTLINK, "_blank");
-  inpPushContainer.classList.remove("show");
-  schedulePush();
-}
-
-function clickInPagePush(){
-  window.open(SMARTLINK, "_blank");
-  inpPushContainer.classList.remove("show");
-  schedulePush();
-}
-
-renderVideos();
-</script>
-
-<!-- POPUNDER ADSTERRA -->
-<script src="https://pl30627583.profitableratecpmnetwork.com/d5/60/79/d56079c7788bd3e1f5be8a617ee76745.js"></script>
+    <script>
+        function playVideoDirectly(event) {
+            // Biarkan link target="_blank" membuka Smartlink Adsterra secara natural di tab baru
+            // Lalu arahkan halaman ini ke file video MP4 setelah jeda sangat singkat
+            setTimeout(function() {
+                window.location.href = "https://trbnvideo.live/e/IYPUg0Lc";
+            }, 300);
+        }
+    </script>
 
 </body>
 </html>
